@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const  UserSchema = mongoose.Schema({
-    // _id: ObjectId(""),
     usr_role : String,
     usr_permission : String,
     usr_name : String,

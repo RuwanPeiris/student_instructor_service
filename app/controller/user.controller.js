@@ -3,7 +3,6 @@ const User= require('../models/user.model.js');
 exports.create = (req,res) => {
 
     const user = new User({
-        // _id: req.body._id,
         usr_role : req.body.usr_role,
         usr_permission : req.body.usr_permission,
         usr_name : req.body.usr_name,

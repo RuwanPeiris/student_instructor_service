@@ -25,6 +25,7 @@ app.get('/',(req,res) => {
     res.json({"message" : "Welcome to student_info api.. "});
 });
 
+//Add your routes here
 require('./app/routes/user.routes.js')(app);
 
 app.listen(3000, () => {
