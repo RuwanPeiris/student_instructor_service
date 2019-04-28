@@ -28,6 +28,9 @@ app.get('/',(req,res) => {
 //Add your routes here
 require('./app/routes/user.routes.js')(app);
 
-app.listen(3000, () => {
-    console.log("Server is listening 3000");
+
+//Changing ports to accept dynamic port number when it is deploy to server in cloud or internet
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log("Server is listening "+ port);
 });

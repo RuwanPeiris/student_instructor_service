@@ -57,3 +57,11 @@ exports.update = (req,res) => {
 exports.delete = (req,res) => {
 
 };
+
+exports.login = (req,res) => {
+
+};
+
+exports.logout = (req,res) => {
+
+};
