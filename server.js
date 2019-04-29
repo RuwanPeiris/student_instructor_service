@@ -1,10 +1,10 @@
 let express = require('express');
+const session = require('express-session');
 let bodyParser = require('body-parser');
 
 let app = express();
 
 app.use(bodyParser.urlencoded({extended : true}));
-
 app.use(bodyParser.json());
 
 const dbConfig = require('./config/database.config.js');
@@ -22,7 +22,7 @@ mongoose.connect(dbConfig.url, {
 });
 
 app.get('/',(req,res) => {
-    res.json({"message" : "Welcome to student_info api.. "});
+    res.json({"message" : "Welcome to student_info api.. "+ res.session.usr_name});
 });
 
 //Add your routes here
@@ -34,3 +34,5 @@ let port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log("Server is listening "+ port);
 });
+
+module.exports =app;
