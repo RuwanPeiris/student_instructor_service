@@ -29,6 +29,7 @@ app.get('/',(req,res) => {
 require('./app/routes/user.routes.js')(app);
 
 
+
 //Changing ports to accept dynamic port number when it is deploy to server in cloud or internet
 let port = process.env.PORT || 3000;
 app.listen(port, () => {
