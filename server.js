@@ -22,11 +22,12 @@ mongoose.connect(dbConfig.url, {
 });
 
 app.get('/', (req, res) => {
-    res.json({ "message": "Welcome to student_info api.. " + res.session.usr_name });
+    res.json({ "message": "Welcome to student_info api.. " });
 });
 
 //Add your routes here
 require('./app/routes/user.routes.js')(app);
+require('./app/routes/course.routes.js')(app);
 
 
 
