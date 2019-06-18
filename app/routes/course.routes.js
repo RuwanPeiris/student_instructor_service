@@ -9,6 +9,6 @@ module.exports = (app) => {
 
     app.put('/courses/:course_ID', courses.update);
 
-    app.delete('/courses/:usr_name', courses.delete);
+    app.delete('/courses/:course_ID', courses.delete);
 
 }
