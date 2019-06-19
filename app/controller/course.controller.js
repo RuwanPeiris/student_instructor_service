@@ -12,9 +12,14 @@ app.use(session({ secret: 'code eye secret', saveUninitialized: true, resave: tr
 exports.create = (req, res) => {
     const course = new Course({
         course_name: req.body.course_name,
-        course_ID: req.body.coutse_ID,
+        course_id: req.body.course_id,
         course_dec: req.body.course_dec,
-        subjects: req.body.subjects
+        course_modules: {
+            year1: req.body.course_modules.year1,
+            year2: req.body.course_modules.year2,
+            year3: req.body.course_modules.year3,
+            year4: req.body.course_modules.year4
+        }
     });
 
     course.save().then(data => {
@@ -48,7 +53,7 @@ exports.findAll = (req, res) => {
 * Response course json() 
 */
 exports.findByCourseID = (req, res) => {
-    const query = Course.where({ course_ID: req.params.course_ID });
+    const query = Course.where({ course_id: req.params.course_id });
     query.findOne(function (err, course) {
         if (err === 'ObjectId') {
             return res.status(404).send({
@@ -57,26 +62,36 @@ exports.findByCourseID = (req, res) => {
         }
         if (err === 500) {
             return res.status(500).send({
-                message: err.message || "Server error occurred while retrieving  " + req.params.course_ID
+                message: err.message || "Server error occurred while retrieving  " + req.params.course_id
             });
         }
         if (course != null) {
             //Defining founded Course object & send as response
             let courseDetails = new Course({
-                course_name: req.params.course_name,
-                course_ID: req.params.course_ID,
-                course_dec: req.params.course_dec,
-                subjects: req.params.subjects
+                course_name: course.course_name,
+                course_id: course.course_id,
+                course_dec: course.course_dec,
+                course_modules: {
+                    year1: course.course_modules.year1,
+                    year2: course.course_modules.year2,
+                    year3: course.course_modules.year3,
+                    year4: course.course_modules.year4
+                }
             });
             res.send(courseDetails);
         } else {
             let courseDetails = new Course({
                 course_name: null,
-                course_ID: null,
+                course_id: null,
                 course_dec: null,
-                subjects: []
+                course_modules: {
+                    year1: [],
+                    year2: [],
+                    year3: [],
+                    year4: []
+                }
             });
-            res.send(courseDetails)
+            res.send(courseDetails);
         }
 
     });
@@ -88,7 +103,7 @@ exports.findByCourseID = (req, res) => {
 * request body will be json() 
 */
 exports.update = (req, res) => {
-    Course.updateOne({ course_ID: req.params.course_ID }, { $set: req.body }, function (err, result) {
+    Course.updateOne({ course_id: req.params.course_id }, { $set: req.body }, function (err, result) {
         if (err) throw err;
         res.send(result);
     });
@@ -100,7 +115,7 @@ exports.update = (req, res) => {
 * request body will be json() 
 */
 exports.delete = (req, res) => {
-    Course.deleteOne({ course_ID: req.params.course_ID }, function (err, result) {
+    Course.deleteOne({ course_id: req.params.course_id }, function (err, result) {
         if (err) {
             console.log(err);
         }

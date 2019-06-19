@@ -5,10 +5,10 @@ module.exports = (app) => {
 
     app.get('/courses', courses.findAll);
 
-    app.get('/courses/:course_ID', courses.findByCourseID);
+    app.get('/courses/:course_id', courses.findByCourseID);
 
-    app.put('/courses/:course_ID', courses.update);
+    app.put('/courses/:course_id', courses.update);
 
-    app.delete('/courses/:course_ID', courses.delete);
+    app.delete('/courses/:course_id', courses.delete);
 
 }
