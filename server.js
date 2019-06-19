@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
 //Add your routes here
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/course.routes.js')(app);
+require('./app/routes/instructor_allocation.routes.js')(app);
+
 
 
 
