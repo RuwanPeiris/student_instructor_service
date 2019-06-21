@@ -44,8 +44,12 @@ app.get('/', (req, res) => {
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/course.routes.js')(app);
 require('./app/routes/instructor_allocation.routes.js')(app);
+<<<<<<< HEAD
 require('./app/routes/file.routes.js')(app);
 
+=======
+require('./app/routes/instructor.routes')(app);
+>>>>>>> 4b75dda14570fedc4d1670138ac5c4ab3c1bee14
 
 
 //Changing ports to accept dynamic port number when it is deploy to server in cloud or internet
