@@ -11,6 +11,12 @@ let app = express();
 app.use(busboy());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+//CORS origin resolving
+app.use(function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+});
 //Middlewares File related
 app.use(busboyBodyParser());
 // app.use(methodOverride('_method'));
