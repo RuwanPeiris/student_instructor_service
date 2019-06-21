@@ -52,29 +52,64 @@ exports.findAll = (req, res) => {
 };
 
 /*
-* file find by filename
+* files find by assignmentname
 * Find file by mongoose query function "where"
-* Request parameter filename
+* Request parameter assignmentname
 * Response course json() 
 */
-exports.findByFilename = (req, res) => {
+exports.findFilesByAssignmentName = (req, res) => {
+    const query = File.where({ assignmentname: req.params.assignmentname });
+    query.find().then(files => {
+        res.send(files);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Can not get files details"
+        });
+    });
+
+};
+
+
+/*
+* file find by assignmentname and studentid
+* Find file by mongoose query function "where"
+* Request parameter assignmentname
+* Response course json() 
+*/
+exports.findFilesByAssignmentNameStudentId = (req, res) => {
+    const query = File.where({ assignmentname: req.params.assignmentname, studentid: req.params.studentid });
+    query.find().then(files => {
+        res.send(files);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Can not get file details"
+        });
+    });
 
 };
 
 /*
 *Updating File document
-* header accept parameter filename
+* header accept parameter assignmentname and studentid
 * request body will be json() 
 */
 exports.update = (req, res) => {
-
+    File.updateOne({ assignmentname: req.params.assignmentname, studentid: req.params.studentid }, { $set: req.body }, function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
 };
 
 /*
 * Deleting File document
-* Header parameter accepts filename
+* Header parameter accepts assignmentname and studentid
 * request body will be json() 
 */
 exports.delete = (req, res) => {
-
+    File.deleteOne({ assignmentname: req.params.assignmentname, studentid: req.params.studentid }, function (err, result) {
+        if (err) {
+            console.log(err);
+        }
+        res.send(result);
+    });
 };

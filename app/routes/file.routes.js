@@ -5,10 +5,12 @@ module.exports = (app) => {
 
     app.get('/files', files.findAll);
 
-    app.get('/files/:filename', files.findByFilename);
+    app.get('/files/:assignmentname', files.findFilesByAssignmentName);
 
-    app.put('/files/:filename', files.update);
+    app.get('/files/:assignmentname/:studentid', files.findFilesByAssignmentNameStudentId);
 
-    app.delete('/files/:filename', files.delete);
+    app.put('/files/:assignmentname/:studentid', files.update);
+
+    app.delete('/files/:assignmentname/:studentid', files.delete);
 
 }
