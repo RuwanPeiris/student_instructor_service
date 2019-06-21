@@ -12,13 +12,9 @@ let Busboy = require('busboy');
 */
 exports.save = (req, res) => {
 
-
     let busboy = new Busboy({ headers: req.headers });
 
     busboy.on('finish', function () {
-
-        console.log(req.files);
-
         const file = req.files.uploadFile;
         console.log(file);
 
@@ -39,7 +35,6 @@ exports.save = (req, res) => {
         });
     });
     req.pipe(busboy);
-
 };
 
 /*
