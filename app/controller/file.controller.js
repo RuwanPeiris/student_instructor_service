@@ -42,7 +42,13 @@ exports.save = (req, res) => {
 * Respond files json() array
 */
 exports.findAll = (req, res) => {
-
+    File.find().then(files => {
+        res.send(files);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Can not get files details"
+        });
+    });
 };
 
 /*
