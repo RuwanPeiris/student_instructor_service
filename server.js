@@ -1,11 +1,6 @@
 let express = require('express');
 const session = require('express-session');
 let bodyParser = require('body-parser');
-let path = require('path');
-let multer = require('multer');//handling multipart/form-data - to upload files
-let GridfsStorage = require('multer-gridfs-storage');//Allows to strore more than 16MB directly in the database
-let gridfsStream = require('gridfs-stream');//helps to use streams more strong and easier
-let methodOverride = require('method-override');
 
 const busboy = require('connect-busboy');
 const busboyBodyParser = require('busboy-body-parser');
@@ -17,7 +12,6 @@ app.use(busboy());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 //Middlewares File related
-
 app.use(busboyBodyParser());
 // app.use(methodOverride('_method'));
 
@@ -44,12 +38,8 @@ app.get('/', (req, res) => {
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/course.routes.js')(app);
 require('./app/routes/instructor_allocation.routes.js')(app);
-<<<<<<< HEAD
 require('./app/routes/file.routes.js')(app);
-
-=======
 require('./app/routes/instructor.routes')(app);
->>>>>>> 4b75dda14570fedc4d1670138ac5c4ab3c1bee14
 
 
 //Changing ports to accept dynamic port number when it is deploy to server in cloud or internet
