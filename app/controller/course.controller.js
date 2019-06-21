@@ -37,6 +37,7 @@ exports.create = (req, res) => {
 * Respond Course json() array
 */
 exports.findAll = (req, res) => {
+    console.log('loggeddddd');
     Course.find().then(courses => {
         res.send(courses);
     }).catch(err => {
