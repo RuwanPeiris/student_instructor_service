@@ -1,17 +1,11 @@
 let express = require('express');
 const session = require('express-session');
-//const InstructorAllocation = require('../models/instructor_allocation.model.js');
-const InstructorAdding = require('../models/instructor_adding.model');
+const Instructor = require('../models/instructor_adding.model');
 let app = express();
 app.use(session({ secret: 'code eye secret', saveUninitialized: true, resave: true }));
 
-/*
-*Creating new InstructorAllocation
-* Request parameter InstructorAllocation json()
-* Respond instructorAllocation json()
-*/
 exports.create = (req, res) => {
-    const instructor = new InstructorAdding({
+    const instructor = new Instructor({
 
         role: req.body.role,
         instructor_name: req.body.instructor_name,
@@ -32,29 +26,19 @@ exports.create = (req, res) => {
 
 };
 
-/*
-* Find all instructorAllocations
-* Respond instructorAllocations json() array
-*/
-exports.findAll = (req, res) => {
-    InstructorAllocation.find().then(instructorAllocations => {
-        res.send(instructorAllocations);
+    exports.findAll = (req, res) => {
+    Instructor.find().then(instructorData => {
+        res.send(instructorData);
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Can not get instructorAllocations details"
+            message: err.message || "Can not get instructor details"
         });
     });
 };
 
-/*
-* instructorAllocations find by course_id and course_name
-* Find instructorAllocation by mongoose query function "where"
-* Request parameter course_id,course_name
-* Response course json() 
-*/
-exports.findByCourseIDNCourseNameNModuleId = (req, res) => {
-    const query = InstructorAllocation.where({ course_id: req.params.course_id, course_name: req.params.course_name, module_id: req.params.module_id });
-    query.findOne(function (err, instructorAllocation) {
+    exports.findByID = (req, res) => {
+    const query = Instructor.where({_id: req.params.id });
+    query.findOne(function (err, instructor) {
         if (err === 'ObjectId') {
             return res.status(404).send({
                 message: "Course not found error Object Id"
@@ -62,32 +46,82 @@ exports.findByCourseIDNCourseNameNModuleId = (req, res) => {
         }
         if (err === 500) {
             return res.status(500).send({
-                message: err.message || "Server error occurred while retrieving  " + req.params.module_id
+                message: err.message || "Server error occurred while retrieving  " + req.params.id
             });
         }
-        if (instructorAllocation != null) {
-            //Defining founded instructorAllocationDetail object & send as response
-            let instructorAllocationDetails = new InstructorAllocation({
-                course_name: instructorAllocation.course_name,
-                course_id: instructorAllocation.course_id,
-                module_name: instructorAllocation.module_name,
-                module_id: instructorAllocation.module_id,
-                instructors: instructorAllocation.instructors
+        if (instructor != null) {
+            //Defining founded Course object & send as response
+            let instructorDetails = new Instructor({
+                role: instructor.role,
+                instructor_name: instructor.instructor_name,
+                instructor_email: instructor.instructor_email,
+                instructor_password: instructor.instructor_password,
+                instructor_phone_number: instructor.instructor_phone_number,
+                instructor_address: instructor.instructor_address
             });
-            res.send(instructorAllocationDetails);
+            res.send(instructorDetails);
         } else {
-            let instructorAllocationDetails = new InstructorAllocation({
-                course_name: null,
-                course_id: null,
-                module_name: null,
-                module_id: null,
-                instructors: []
+            let instructorDetails = new Instructor({
+                role: "",
+                instructor_name: "",
+                instructor_email: "",
+                instructor_password: "",
+                instructor_phone_number: "",
+                instructor_address: ""
             });
-            res.send(instructorAllocationDetails);
+            res.send(instructorDetails);
         }
 
     });
 };
+
+
+
+
+exports.findInstructor = (req, res) => {
+    const query = Instructor.where({ instructor_name: req.params.instructor_name, instructor_email: req.params.instructor_email,
+        instructor_phone_number: req.params.instructor_phone_number ,instructor_address: req.params.instructor_address });
+    query.findOne(function (err, instructor) {
+        if (err) {
+            return res.status(404).send({
+                message: "(Data not found error ObjectId"
+            });
+        }
+        else if (err === 500) {
+            return res.status(500).send({
+                message: err.message || "Server error occurred while retrieving  " + req.params.module_id
+            });
+        }
+        if (instructor != null) {
+            //Defining founded instructorAllocationDetail object & send as response
+            let instructorDetails = new Instructor({
+
+                role: instructor.role,
+                instructor_name: instructor.instructor_name,
+                instructor_email: instructor.instructor_email,
+                instructor_password: instructor.instructor_password,
+                instructor_phone_number: instructor.instructor_phone_number,
+                instructor_address: instructor.instructor_address
+
+            });
+            res.send(instructorDetails);
+        } else {
+            let instructorDetails = new Instructor({
+
+                role: null,
+                instructor_name: null,
+                instructor_email: null,
+                instructor_password: null,
+                instructor_phone_number: null,
+                instructor_address: null
+
+            });
+            res.send(instructorDetails);
+        }
+
+    });
+};
+
 
 /*
 *Updating InstructorAllocation document
@@ -95,10 +129,33 @@ exports.findByCourseIDNCourseNameNModuleId = (req, res) => {
 * request body will be json() 
 */
 exports.update = (req, res) => {
-    InstructorAllocation.updateOne({ module_id: req.params.module_id }, { $set: req.body }, function (err, result) {
-        if (err) throw err;
+    const instructor = Instructor({
+        _id:req.params.id,
+        role: req.body.role,
+        instructor_name: req.body.instructor_name,
+        instructor_email: req.body.instructor_email,
+        instructor_password: req.body.instructor_password,
+        instructor_phone_number: req.body.instructor_phone_number,
+        instructor_address: req.body.instructor_address
+    });
+    console.log(instructor);
+    console.log(req.params.id);
+    console.log(req.body);
+    Instructor.updateOne({_id: req.params.id }, { $set:{role: req.body.role,instructor_name: req.body.instructor_name,
+        instructor_email: req.body.instructor_email,
+        instructor_password: req.body.instructor_password,
+        instructor_phone_number: req.body.instructor_phone_number,
+        instructor_address: req.body.instructor_address} }, function (err, result) {
+        if (err)throw err;
         res.send(result);
     });
+  /*  Instructor.update({_id :  req.body._id },req.data).then(()=>{
+        resolve({status : 200, message: "User updated"});
+    }).catch(err => {
+        reject({status: 500, message : "Error" + err});
+    })*/
+
+
 };
 
 /*
@@ -107,7 +164,9 @@ exports.update = (req, res) => {
 * request body will be json() 
 */
 exports.delete = (req, res) => {
-    InstructorAllocation.deleteOne({ module_id: req.params.module_id }, function (err, result) {
+
+    console.log("came to delete fun with id : "+ req.params.id)
+    Instructor.deleteOne({_id: req.params.id }, function (err, result) {
         if (err) {
             console.log(err);
         }
