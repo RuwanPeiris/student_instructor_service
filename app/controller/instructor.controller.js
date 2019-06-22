@@ -149,20 +149,8 @@ exports.update = (req, res) => {
         if (err)throw err;
         res.send(result);
     });
-  /*  Instructor.update({_id :  req.body._id },req.data).then(()=>{
-        resolve({status : 200, message: "User updated"});
-    }).catch(err => {
-        reject({status: 500, message : "Error" + err});
-    })*/
-
-
 };
 
-/*
-* Deleting InstructorAllocation document
-* Header parameter accepts course_ID
-* request body will be json() 
-*/
 exports.delete = (req, res) => {
 
     console.log("came to delete fun with id : "+ req.params.id)
