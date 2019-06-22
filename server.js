@@ -1,6 +1,11 @@
+require('rootpath')();
 let express = require('express');
 const session = require('express-session');
 let bodyParser = require('body-parser');
+
+const cors = require('cors');
+const errorHandler = require('_helpers/error-handler');
+
 
 const busboy = require('connect-busboy');
 const busboyBodyParser = require('busboy-body-parser');
@@ -11,6 +16,7 @@ let app = express();
 app.use(busboy());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 //CORS origin resolving
 app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -22,6 +28,13 @@ app.all('*', function (req, res, next) {
 //Middlewares File related
 app.use(busboyBodyParser());
 // app.use(methodOverride('_method'));
+
+// api routes
+app.use('/users', require('./users/users.controller'));
+
+// global error handler
+app.use(errorHandler);
+
 
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
@@ -43,11 +56,11 @@ app.get('/', (req, res) => {
 });
 
 //Add your routes here
-require('./app/routes/user.routes.js')(app);
 require('./app/routes/course.routes.js')(app);
 require('./app/routes/instructor_allocation.routes.js')(app);
 require('./app/routes/file.routes.js')(app);
 require('./app/routes/instructor.routes')(app);
+// require('./app/routes/auth')(app);
 
 
 //Changing ports to accept dynamic port number when it is deploy to server in cloud or internet
