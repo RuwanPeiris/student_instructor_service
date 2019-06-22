@@ -5,8 +5,6 @@ module.exports = (app) => {
 
     app.get('/assignments', files.findAll);
 
-    app.get('/assignments/:assignmentname/:studentid', files.findAssignmentByStudentId);
-
-    app.get('/assignments/:assignmentname', files.findFilesByAssignmentName);
+    app.get('/assignments/:studentid', files.findAssignmentByStudentId);
 
 }

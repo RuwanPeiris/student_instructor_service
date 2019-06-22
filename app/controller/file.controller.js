@@ -22,7 +22,7 @@ exports.save = (req, res) => {
             studentid: req.body.studentid,
             assignmentname: req.body.assignmentname,
             date: new Date().toISOString(),
-            filename: req.files.uploadFile.name,
+            filename: req.body.filename,
             uploadFile: file
         });
 
